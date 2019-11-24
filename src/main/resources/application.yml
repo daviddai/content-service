@@ -1,0 +1,17 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /api/product-content
+
+spring:
+  rabbitmq:
+    # todo: fix docker containers interconnection
+    host: 10.135.6.28
+    port: 5672
+    username: guest
+    password: guest
+
+subscriber:
+  queueName: product-content
+  routingKey: supplier.createProduct
+

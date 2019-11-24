@@ -1,0 +1,11 @@
+version : '2'
+services:
+  product-content-service:
+    container_name: product-content-service
+    tty: true
+    build: ../
+    ports:
+      - "8082:8082"
+      - "4082:4082"
+    volumes:
+      - ../build/libs:/vol/development/
