@@ -6,12 +6,8 @@ server:
 spring:
   rabbitmq:
     # todo: fix docker containers interconnection
-    host: 10.135.6.28
+    host: 10.135.26.20
     port: 5672
     username: guest
     password: guest
-
-subscriber:
-  queueName: product-content
-  routingKey: supplier.createProduct
 

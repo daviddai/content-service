@@ -39,4 +39,4 @@ RUN set -x \
 RUN mkdir -p /vol/development/
 VOLUME /vol/development/
 WORKDIR /vol/development/
-CMD ["java", "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4082", "-jar", "product-content-service-1.0-SNAPSHOT.jar"]
+CMD ["java", "-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=4082", "-jar", "content-service-1.0-SNAPSHOT.jar"]
