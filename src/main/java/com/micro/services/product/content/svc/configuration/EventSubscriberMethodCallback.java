@@ -8,6 +8,8 @@ import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.MessageConversionException;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -50,6 +52,17 @@ public class EventSubscriberMethodCallback implements ReflectionUtils.MethodCall
                     .with("supplier.createProduct"));
 
             MessageListenerAdapter messageListenerAdapter = new MessageListenerAdapter(bean, method.getName());
+            messageListenerAdapter.setMessageConverter(new MessageConverter() {
+                @Override
+                public Message toMessage(Object object, MessageProperties messageProperties) throws MessageConversionException {
+                    return null;
+                }
+
+                @Override
+                public Object fromMessage(Message message) throws MessageConversionException {
+                    return new String(message.getBody());
+                }
+            });
 
             SimpleRabbitListenerEndpoint simpleRabbitListenerEndpoint = new SimpleRabbitListenerEndpoint();
             simpleRabbitListenerEndpoint.setMessageListener(messageListenerAdapter);

@@ -23,8 +23,8 @@ public class ProductContentService {
 //            key = {"supplier.createProduct"}
 //    ))
     @EventSubscriber
-    public void addProduct(byte[] productCode) {
-        productApiModels.add(new ProductApiModel(new String(productCode), ""));
+    public void addProduct(String productCode) {
+        productApiModels.add(new ProductApiModel(productCode, ""));
     }
 
     public ProductApiModel getProductContentByProductCode(String productCode) {
