@@ -16,17 +16,14 @@ import java.util.UUID;
 public class EventSubscriberMethodCallback implements ReflectionUtils.MethodCallback {
 
     private RabbitListenerContainerFactory<SimpleMessageListenerContainer> rabbitListenerContainerFactory;
-    private RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry;
     private AmqpAdmin amqpAdmin;
     private ConnectionFactory connectionFactory;
     private Object bean;
 
-    public EventSubscriberMethodCallback(RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry,
-                                         AmqpAdmin amqpAdmin,
+    public EventSubscriberMethodCallback(AmqpAdmin amqpAdmin,
                                          ConnectionFactory connectionFactory,
                                          RabbitListenerContainerFactory<SimpleMessageListenerContainer> rabbitListenerContainerFactory,
                                          Object bean) {
-        this.rabbitListenerEndpointRegistry = rabbitListenerEndpointRegistry;
         this.amqpAdmin = amqpAdmin;
         this.connectionFactory = connectionFactory;
         this.rabbitListenerContainerFactory = rabbitListenerContainerFactory;
@@ -57,9 +54,7 @@ public class EventSubscriberMethodCallback implements ReflectionUtils.MethodCall
                     .to(exchange)
                     .with("supplier.createProduct"));
 
-            rabbitListenerEndpointRegistry.registerListenerContainer(
-                    simpleRabbitListenerEndpoint, rabbitListenerContainerFactory);
-
+            rabbitListenerContainerFactory.createListenerContainer(simpleRabbitListenerEndpoint);
         }
     }
 }

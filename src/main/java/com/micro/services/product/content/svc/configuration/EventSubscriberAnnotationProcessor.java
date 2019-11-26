@@ -3,7 +3,6 @@ package com.micro.services.product.content.svc.configuration;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
-import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +18,6 @@ public class EventSubscriberAnnotationProcessor implements BeanPostProcessor {
     private RabbitListenerContainerFactory<SimpleMessageListenerContainer> rabbitListenerContainerFactory;
 
     @Autowired
-    private RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry;
-
-    @Autowired
     private AmqpAdmin amqpAdmin;
 
     @Autowired
@@ -30,8 +26,7 @@ public class EventSubscriberAnnotationProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Class<?> managedBeanClass = bean.getClass();
-        MethodCallback methodCallback = new EventSubscriberMethodCallback(
-                rabbitListenerEndpointRegistry, amqpAdmin, connectionFactory, rabbitListenerContainerFactory, bean);
+        MethodCallback methodCallback = new EventSubscriberMethodCallback(amqpAdmin, connectionFactory, rabbitListenerContainerFactory, bean);
         ReflectionUtils.doWithMethods(managedBeanClass, methodCallback);
         return bean;
     }
