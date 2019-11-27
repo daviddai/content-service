@@ -1,6 +1,7 @@
 package com.micro.services.product.content.svc.service;
 
-import com.micro.services.product.content.svc.event.EventSubscriber;
+import com.micro.services.event.bus.annotation.EventSubscriber;
+import com.micro.services.event.bus.event.ProductCreated;
 import com.micro.services.product.content.svc.model.ProductApiModel;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,8 @@ public class ProductContentService {
     private Set<ProductApiModel> productApiModels = new HashSet<>();
 
     @EventSubscriber
-    public void addProduct(String productCode) {
-        productApiModels.add(new ProductApiModel(productCode, ""));
+    public void addProduct(ProductCreated productCreatedEvent) {
+        productApiModels.add(new ProductApiModel(productCreatedEvent.getProductContent().getProductCode(), ""));
     }
 
     public ProductApiModel getProductContentByProductCode(String productCode) {
