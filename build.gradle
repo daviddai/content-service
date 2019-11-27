@@ -11,10 +11,12 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
+    compile 'ddai:event-bus:1.0-SNAPSHOT'
     compile 'org.springframework.boot:spring-boot-dependencies:2.0.5.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-amqp'
