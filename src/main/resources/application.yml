@@ -1,12 +1,12 @@
 server:
   port: 8082
   servlet:
-    context-path: /api/product-content
+    context-path: /api/content
 
 spring:
   rabbitmq:
     # todo: fix docker containers interconnection
-    host: 10.135.6.43
+    host: 192.168.1.2
     port: 5672
     username: guest
     password: guest

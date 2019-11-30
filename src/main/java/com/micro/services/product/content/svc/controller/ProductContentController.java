@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/product-content")
 public class ProductContentController {
@@ -15,9 +17,16 @@ public class ProductContentController {
     @Autowired
     private ProductContentService productContentService;
 
+    @GetMapping(value = "/all")
+    public List<ProductApiModel> getAllProducts() {
+        return productContentService.getAll();
+    }
+
     @GetMapping(value = "/{productCode}")
     public ProductApiModel getProduct(@PathVariable("productCode") String productCode) {
-        return productContentService.getProductContentByProductCode(productCode);
+        return productContentService.getByProductCode(productCode);
     }
+
+
 
 }

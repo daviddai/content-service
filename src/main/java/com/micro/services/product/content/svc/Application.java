@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(
         scanBasePackages = {
                 "com.micro.services.product.content.svc",
-                "com.micro.services.event.bus.annotation"
+                "com.micro.services.event.bus"
         }
 )
 public class Application {
