@@ -25,11 +25,10 @@ public class ProductService {
     private ProductDao productDao;
 
     @EventSubscriber
-    @CachePut(value = "products", key = "#productCreatedEvent.productContent.productCode")
     public void addProduct(ProductCreated productCreatedEvent) {
         ProductContent productContent = productCreatedEvent.getProductContent();
         Product product = constructProduct(productContent);
-        productDao.save(product);
+        addProduct(product);
     }
 
     @Cacheable(value = "products", key = "#productCode")
@@ -48,6 +47,12 @@ public class ProductService {
                 .stream()
                 .map(this::mapFrom)
                 .collect(Collectors.toList());
+    }
+
+    @CachePut(value = "products", key = "#product.productCode")
+    public Product addProduct(Product product) {
+        productDao.save(product);
+        return product;
     }
 
     private Product constructProduct(ProductContent productContent) {
