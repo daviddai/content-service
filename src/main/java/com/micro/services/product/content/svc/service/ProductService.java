@@ -5,6 +5,7 @@ import com.micro.services.event.bus.event.model.ProductContent;
 import com.micro.services.event.bus.subscriber.annotation.EventSubscriber;
 import com.micro.services.product.content.svc.dao.ProductDao;
 import com.micro.services.product.content.svc.dao.model.Product;
+import com.micro.services.product.content.svc.exception.ContentServiceException;
 import com.micro.services.product.content.svc.model.ProductApiModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,14 +33,12 @@ public class ProductService {
     }
 
     @Cacheable(value = "products", key = "#productCode")
-    public ProductApiModel getByProductCode(String productCode) {
-        Product product = productDao.find(productCode);
+    public ProductApiModel getByProductCode(String productCode) throws ContentServiceException {
+        Product product = productDao
+                .find(productCode)
+                .orElseThrow(() -> new ContentServiceException(ContentServiceException.ErrorCode.PRODUCT_DOES_NOT_EXIST));
 
-        if (product != null) {
-            return mapFrom(product);
-        } else {
-            throw new RuntimeException("product code " + productCode + " does not exist");
-        }
+        return mapFrom(product);
     }
 
     public List<ProductApiModel> getAll() {

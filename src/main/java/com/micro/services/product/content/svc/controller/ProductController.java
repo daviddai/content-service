@@ -1,5 +1,6 @@
 package com.micro.services.product.content.svc.controller;
 
+import com.micro.services.product.content.svc.exception.ContentServiceException;
 import com.micro.services.product.content.svc.model.ProductApiModel;
 import com.micro.services.product.content.svc.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "/{productCode}")
-    public ProductApiModel getProduct(@PathVariable("productCode") String productCode) {
+    public ProductApiModel getProduct(@PathVariable("productCode") String productCode) throws ContentServiceException {
         return productService.getByProductCode(productCode);
     }
 
