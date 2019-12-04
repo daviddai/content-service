@@ -10,7 +10,6 @@ import com.micro.services.product.content.svc.model.ProductApiModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +27,12 @@ public class ProductService {
     @EventSubscriber
     public void addProduct(ProductCreated productCreatedEvent) {
         ProductContent productContent = productCreatedEvent.getProductContent();
-        Product product = constructProduct(productContent);
-        addProduct(product);
+        if (productContent != null) {
+            Product product = constructProduct(productContent);
+            productDao.save(product);
+        } else {
+            logger.error("Got empty product created event from message queue");
+        }
     }
 
     @Cacheable(value = "products", key = "#productCode")
@@ -46,12 +49,6 @@ public class ProductService {
                 .stream()
                 .map(this::mapFrom)
                 .collect(Collectors.toList());
-    }
-
-    @CachePut(value = "products", key = "#product.productCode")
-    public Product addProduct(Product product) {
-        productDao.save(product);
-        return product;
     }
 
     private Product constructProduct(ProductContent productContent) {

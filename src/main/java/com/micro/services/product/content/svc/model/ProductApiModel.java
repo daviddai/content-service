@@ -1,6 +1,11 @@
 package com.micro.services.product.content.svc.model;
 
-public class ProductApiModel {
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
+
+public class ProductApiModel implements Serializable {
 
     private String productCode;
     private String productName;
@@ -8,7 +13,10 @@ public class ProductApiModel {
 
     public ProductApiModel() {}
 
-    public ProductApiModel(String productCode, String productName, String productDescription) {
+    @JsonCreator
+    public ProductApiModel(@JsonProperty("productCode") String productCode,
+                           @JsonProperty("productName") String productName,
+                           @JsonProperty("productDescription") String productDescription) {
         this.productCode = productCode;
         this.productName = productName;
         this.productDescription = productDescription;
